@@ -18,7 +18,7 @@ A high-performance, automated video generation pipeline that transforms audio na
 | **GPU + Hybrid** | Image + Vid Mix | 25 vid/hr | ~141s |
 | **GPU + Performance**| Images Only | **208 vid/hr** | **~17s** |
 
-*Benchmarks conducted on a 16-thread CPU with an NVIDIA GTX 1650.*
+*Benchmarks conducted on a 16-thread CPU with an NVIDIA GTX 1650. (Input Audio duration was 3 mins for all test cases)*
 
 ## 📥 Installation
 
