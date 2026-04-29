@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Creator AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <main class="container">
+        <header>
+            <h1>Video Creator <span class="accent">AI</span></h1>
+            <p class="subtitle">Transform narration into cinematic storyboards instantly.</p>
+        </header>
+
+        <section class="card glass">
+            <form id="upload-form">
+                <div class="form-group">
+                    <label for="audio">Narrative Audio</label>
+                    <div class="file-upload" id="drop-zone">
+                        <input type="file" id="audio" name="audio" accept="audio/*">
+                        <div class="upload-content">
+                            <span class="icon">󰳠</span>
+                            <p>Drop your audio file here or click to browse</p>
+                            <div class="or-separator"><span>OR</span></div>
+                            <button type="button" id="use-default-btn" class="btn-ghost-small">Use Default Earth Narration</button>
+                            <p class="file-name" id="file-name-display"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label for="aspect_ratio">Aspect Ratio</label>
+                        <select id="aspect_ratio" name="aspect_ratio">
+                            <option value="16:9">16:9 (Landscape)</option>
+                            <option value="9:16">9:16 (Portrait)</option>
+                            <option value="1:1">1:1 (Square)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group half toggle-group">
+                        <label class="toggle">
+                            <input type="checkbox" id="subtitles" name="subtitles">
+                            <span class="slider"></span>
+                            <span class="label-text">Burn-in Subtitles</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label for="images_per_minute">Images per Minute</label>
+                        <input type="number" id="images_per_minute" name="images_per_minute" value="3" min="0" max="10" class="form-control">
+                    </div>
+                    <div class="form-group half">
+                        <label for="videos_per_minute">Videos per Minute</label>
+                        <input type="number" id="videos_per_minute" name="videos_per_minute" value="1" min="0" max="10" class="form-control">
+                    </div>
+                </div>
+
+                <div class="subtitle-options hidden" id="subtitle-options">
+                    <div class="form-row">
+                        <div class="form-group half">
+                            <label for="subtitle_font">Subtitle Font</label>
+                            <input type="text" id="subtitle_font" name="subtitle_font" value="arial.ttf" class="form-control">
+                        </div>
+                        <div class="form-group half">
+                            <label for="subtitle_size">Font Size</label>
+                            <input type="number" id="subtitle_size" name="subtitle_size" value="48" min="12" max="100" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group half">
+                            <label for="subtitle_color">Text Color</label>
+                            <input type="color" id="subtitle_color" name="subtitle_color" value="#ffffff" class="form-control">
+                        </div>
+                        <div class="form-group half">
+                            <label for="subtitle_bg_color">Background</label>
+                            <input type="color" id="subtitle_bg_color" name="subtitle_bg_color" value="#000000" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" id="generate-btn" class="btn-primary">
+                    <span class="btn-text">Generate Video</span>
+                    <div class="loader-dots hidden"><span></span><span></span><span></span></div>
+                </button>
+            </form>
+        </section>
+
+        <section id="status-card" class="card glass hidden">
+            <h3>Generating your masterpiece...</h3>
+            <div class="progress-info">
+                <p id="status-text" class="status-text">Initializing...</p>
+                <p id="progress-percent" class="progress-percent">0%</p>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <button type="button" id="reset-btn" class="btn-ghost hidden" style="width: 100%; margin-top: 1rem;">Try Again</button>
+        </section>
+
+        <section id="result-card" class="card glass hidden">
+            <h3>Your Video is Ready!</h3>
+            <div class="video-preview">
+                <video id="video-player" controls></video>
+            </div>
+            <div class="actions">
+                <a id="download-link" href="#" download class="btn-secondary">Download Video</a>
+                <button onclick="location.reload()" class="btn-ghost">Create New</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
