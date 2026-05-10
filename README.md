@@ -1,85 +1,94 @@
-# 🎬 Auto-Storyboard Video Creator (GPU Optimized)
+﻿# Auto Storyboard Video Creator ðŸŽ¬
 
-A high-performance, automated video generation pipeline that transforms audio narration into engaging storyboard-style videos. Engineered for high-volume production with NVIDIA GPU acceleration and intelligent media caching.
+<div align="center">
 
-## 🚀 Key Features
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)]()
+[![Python](https://img.shields.io/badge/python-3.8%2B-brightgreen)](https://python.org)
+[![Flask](https://img.shields.io/badge/Flask-2.x-000000?logo=flask)]()
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-- **⚡ GPU Accelerated Rendering**: Built-in support for NVIDIA NVENC (`h264_nvenc`), delivering up to 4x faster rendering than standard CPU encoders.
-- **📦 Batch Processing Engine**: Process hundreds of audio files in parallel with configurable image/video density.
-- **🧠 Intelligent Transcription**: Uses `faster-whisper` (tiny/base models) for near-instant offline transcription.
-- **🗄️ SQLite Media Cache**: Persistent database caching of stock media. Re-using common keywords results in **instant (<3s)** media lookups.
-- **🎨 Dynamic Visuals**: Automatically fetches high-quality stock images and videos from Pexels based on transcription keywords.
-- **🎞️ Professional Output**: Generates web-optimized 720p/1080p MP4 files with standard `yuv420p` compatibility.
+**AI-powered storyboard video generator â€” transform text and scripts into professional storyboard videos.**
 
-## 🛠️ Performance Benchmarks
+</div>
 
-| Setup | Mode | Throughput | Avg. Time / Video |
-| :--- | :--- | :--- | :--- |
-| **GPU + Hybrid** | Image + Vid Mix | 25 vid/hr | ~141s |
-| **GPU + Performance**| Images Only | **208 vid/hr** | **~17s** |
+---
 
-*Benchmarks conducted on a 16-thread CPU with an NVIDIA GTX 1650. (Input Audio duration was 3 mins for all test cases)*
+## Overview
 
-## 📥 Installation
+Auto Storyboard Video Creator is a Flask web application that automatically generates storyboard videos from text input. It extracts keywords, generates scenes, and compiles them into a cohesive video with optional AI-powered narration.
 
-### 1. Requirements
-- Python 3.10+
-- NVIDIA GPU (optional, but highly recommended for NVENC)
-- [FFmpeg](https://ffmpeg.org/) (Included in `/tools`)
+## Features
 
-### 2. Setup Environment
+- ðŸ“ **Script parsing** â€” Extract keywords and scenes from any text input
+- ðŸŽ¨ **Scene generation** â€” Generate visual representations for each storyboard frame
+- ðŸ—£ï¸ **Transcription** â€” Automatic speech-to-text for audio input
+- ðŸŽ¬ **Video compilation** â€” Combine scenes into a complete storyboard video
+- ðŸ¤– **API integration** â€” RESTful API for programmatic access
+- ðŸ“¦ **Batch processing** â€” Process multiple scripts in one go
+- ðŸŒ **Web interface** â€” User-friendly Flask web UI
+
+## Tech Stack
+
+| Component | Technology |
+|-----------|------------|
+| Backend | Python, Flask |
+| Frontend | HTML, CSS, JavaScript |
+| AI APIs | OpenAI / custom endpoints |
+| Processing | FFmpeg (video compilation) |
+| Container | Docker-ready |
+
+## Quick Start
+
 ```bash
-git clone https://github.com/yourusername/video-creator.git
-cd video-creator
-python -m venv venv
-.\venv\Scripts\activate
+# Install dependencies
 pip install -r requirements.txt
+
+# Run the application
+python app.py
+
+# Open in browser
+# http://localhost:5000
 ```
 
-### 3. Configure API Keys
-Create a `.env` file in the root directory:
+## Project Structure
+
+```
+Auto-Storyboard-Video-Creator/
+â”œâ”€â”€ app.py                  # Flask application entry point
+â”œâ”€â”€ main.py                 # Core processing logic
+â”œâ”€â”€ batch_processor.py      # Batch processing engine
+â”œâ”€â”€ config/
+â”‚   â””â”€â”€ config.py           # Application configuration
+â”œâ”€â”€ src/
+â”‚   â”œâ”€â”€ api_client.py       # External API integration
+â”‚   â”œâ”€â”€ keyword_extraction.py # Keyword extraction engine
+â”‚   â”œâ”€â”€ transcription.py    # Speech-to-text module
+â”‚   â””â”€â”€ video_generator.py  # Video generation pipeline
+â”œâ”€â”€ templates/
+â”‚   â””â”€â”€ index.html          # Web UI template
+â”œâ”€â”€ static/
+â”‚   â”œâ”€â”€ css/
+â”‚   â”‚   â””â”€â”€ style.css
+â”‚   â””â”€â”€ js/
+â”‚       â””â”€â”€ main.js
+â””â”€â”€ requirements.txt
+```
+
+## API Usage
+
 ```bash
-PEXELS_API_KEY=your_key_here
+# Submit a script for storyboard generation
+curl -X POST http://localhost:5000/api/generate \
+  -H "Content-Type: application/json" \
+  -d '{"script": "A hero discovers a hidden power..."}'
+
+# Check processing status
+curl http://localhost:5000/api/status/{task_id}
+
+# Download generated video
+curl http://localhost:5000/api/download/{task_id}
 ```
 
-## 🎮 Usage
+## License
 
-### High-Volume Batch Processing
-The primary way to use this tool is via the `batch_processor.py`. Place your `.mp3` files in the `input_audio/` folder.
-
-```powershell
-# Run 10 videos in GPU mode (3 parallel workers)
-python batch_processor.py --mode gpu --count 10 --images 4 --videos 0
-
-# Run in CPU mode (8 parallel workers)
-python batch_processor.py --mode cpu --count 5 --images 3 --videos 1
-```
-
-### CLI Arguments
-- `--mode`: `gpu` (NVENC) or `cpu` (libx264).
-- `--count`: Number of files to process from input folder.
-- `--images`: Number of images to show per minute of audio.
-- `--videos`: Number of video clips to show per minute of audio.
-
-## 📂 Project Structure
-
-```text
-├── src/
-│   ├── video_generator.py   # Main orchestrator & SQLite Cache
-│   ├── transcription.py      # Whisper AI integration
-│   ├── keyword_extraction.py # NLP keyword extraction
-│   └── api_client.py         # Pexels API integration
-├── batch_processor.py        # Parallel processing engine
-├── config/
-│   └── config.py             # Global settings (FPS, Resolution)
-├── input_audio/              # Source your narration files here
-├── cache/                    # Persistent SQLite & media cache
-└── output/                   # Final rendered videos
-```
-
-## 🔧 Optimization Notes
-- **MoviePy v1.0.3**: This project uses a specifically tuned version of MoviePy v1.0.3 to bypass performance regressions in newer versions, enabling the 200+ vid/hr throughput.
-- **Worker Limits**: GPU mode is capped at 3 parallel workers to respect hardware session limits on consumer NVIDIA cards (like GTX 1650).
-
-## 📄 License
-MIT License - See [LICENSE](LICENSE) for details.
+MIT â€” see [LICENSE](LICENSE).
